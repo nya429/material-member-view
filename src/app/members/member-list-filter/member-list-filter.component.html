@@ -1,0 +1,130 @@
+<div class='panel-wrapper'>
+  <div class="panel-title">
+    <div class="title-spacer">
+        <i class="fa fa-filter" style="font-size: 18px;"></i>
+       Filter
+    </div>
+    <button mat-icon-button
+    (click)='onClearFilter()'
+          matTooltip="Clear the filter"
+          aria-label="Clear the filter">
+          <mat-icon>refresh</mat-icon>
+    </button>
+       
+
+  </div>
+   <div class="panel-body">
+       <div class='search-form'>
+        <form
+        fxLayout="column"
+        fxLayoutAlign="begin begin"
+        fxLayoutGap="10px"
+        [formGroup]="filterForm">
+        <mat-form-field>
+          <input
+          type="name"
+          matInput
+          autocomplete="off"
+          placeholder="Search by Name"
+          formControlName="name"
+          (keyup)='onQuickSearch()'>
+          <app-typeahead 
+          [@listExpandTriggerState]
+          appClickOutside
+          (clickOutside)="onSuggestionDismiss()"
+          (itemSelected)="onItemSelected($event)"
+          *ngIf ='matchs && matchs.length > 0'
+          [searchString]='searchStr'
+          [typeSuggestions]='matchs'></app-typeahead>
+        </mat-form-field>
+        <!-- <mat-slide-toggle fxFlex
+        style='padding-left:20px;'
+        formControlName="disenrolled"
+        color="warm"
+        aria-label='Disenrolled' >
+       Exact Date
+        </mat-slide-toggle>
+        <section         
+        fxLayout="column"
+        fxLayout.gt-md="row"
+        fxLayoutAlign="begin begin"> -->
+        <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+          <input matInput placeholder="Search by Birthday" 
+          [matDatepicker]="pickerDobStart" (focus)="pickerDobStart.open()" 
+          formControlName="dob" >
+          <mat-datepicker-toggle color='warn' matSuffix [for]="pickerDobStart"></mat-datepicker-toggle>
+          <mat-datepicker startView='multi-year' #pickerDobStart></mat-datepicker>
+        </mat-form-field>
+        <!-- <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+            <input matInput placeholder="DoB before" 
+            [matDatepicker]="pickerDobEnd" (focus)="pickerDobEnd.open()" 
+            formControlName="dob" >
+            <mat-datepicker-toggle color='warn' matSuffix [for]="pickerDobEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDobEnd></mat-datepicker>
+        </mat-form-field>
+        </section> -->
+        <section         
+        fxLayout="column"
+        fxLayout.gt-md="row"
+        fxLayoutAlign="begin begin">
+          <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+            <mat-select placeholder="by City"  formControlName="city" >
+              <mat-option *ngFor='let careCity of careCities;'
+              [value]='careCity.value'>{{ careCity.key }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+            <mat-select placeholder="by County" formControlName="county" >
+              <mat-option *ngFor="let careCounty of careCounties;"
+              [value]='careCounty.value'>{{ careCounty.key }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </section>
+        <!-- <mat-form-field>
+          <mat-select placeholder="Search by Care Manager" formControlName="cmo">
+            <mat-option *ngFor='let careManager of careManagers;'
+            [value]='careManager.value'>{{ careManager.key }}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+            <mat-select placeholder="Search By Program" formControlName="program" >
+              <mat-option *ngFor="let program of programs;"
+              [value]='program.value'>{{ program.key }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <section         
+        fxLayout="column"
+        fxLayout.gt-md="row"
+        fxLayoutAlign="begin begin">
+        <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+          <input matInput placeholder="Program Start Date" 
+          [matDatepicker]="pickerSpanStart" (focus)="pickerSpanStart.open()" 
+          formControlName="programStartDate" >
+          <mat-datepicker-toggle color='warn' matSuffix [for]="pickerSpanStart"></mat-datepicker-toggle>
+          <mat-datepicker startView='multi-year' #pickerSpanStart></mat-datepicker>
+        </mat-form-field>
+        <!-- <span fxFlex.gt-md="50%">-</span> -->
+        <mat-form-field class="mat-form-fx" fxFlex.gt-md="50%">
+            <input matInput placeholder="Program End Date" 
+            [matDatepicker]="pickerSpanEnd" (focus)="pickerSpanEnd.open()" 
+            formControlName="programEndDate" >
+            <mat-datepicker-toggle color='warn'  matSuffix [for]="pickerSpanEnd"></mat-datepicker-toggle>
+            <mat-datepicker startView='multi-year' #pickerSpanEnd></mat-datepicker>
+        </mat-form-field>
+        </section>
+        <mat-action-row
+        fxLayout="row"
+        fxLayoutAlign="begin begin">
+          <button mat-raised-button color="primary" (click)='onSearch()'>Search</button>
+              <mat-slide-toggle fxFlex
+                  style='padding-left:20px;'
+                  formControlName="disenrolled"
+                  color="warm"
+                  aria-label='Disenrolled' >
+                Including Disenrollees
+              </mat-slide-toggle>
+        </mat-action-row>
+        </form>
+       </div>
+   </div>
+ </div>

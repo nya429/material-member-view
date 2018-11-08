@@ -1,0 +1,53 @@
+.table-container {
+    max-height:  calc(100vh - 230px);
+    overflow: auto;
+}
+
+.table-wrapper {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+}
+
+table {
+    width: 100%;
+    /* min-width: 1000px; */
+}
+
+mat-paginator {
+    position: relative;
+    bottom: 0;
+}
+
+#loding-wrapper {
+    background: rgba(255,255,255, 0.77);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+mat-spinner {
+    width: 100px;
+    height: 100px;
+    top: calc(50% - 50px);
+    right: 0;
+    margin: auto;
+}
+
+.overlay {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+label {
+    margin-bottom: 0px !important;
+}
+
+.lookup-highlight {
+    background: navajowhite;
+}
+
+.lookup-de-highlight {
+    background: #fff0d9;
+    opacity: .3;
+}

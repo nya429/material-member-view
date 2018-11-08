@@ -1,20 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
-body {
-    margin: 0;
-    min-width: 1200px;
-}
-
-html, body {
-    font-family: 'Roboto', sans-serif;
-    height: 100%;
-  }
-
-  .panel-wrapper {
+.panel-wrapper {
     border: 1px solid rgba(0, 0, 0, 0.03);
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
-    /* margin: 4px; */
+    margin: 4px;
 }
 
 .panel-title {
@@ -34,5 +21,9 @@ html, body {
 
 .panel-body {
     padding: 30px;
-    background: #fff;
+    background-color: #fff;
+}
+
+mat-form-field {
+    min-width: 300px;
 }

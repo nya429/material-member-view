@@ -1,0 +1,20 @@
+<div class='panel-wrapper'>
+  <div class="panel-title">
+    <div class="title-spacer">
+       Action
+    </div>
+  </div>
+   <div class="panel-body">
+        {{ memberSelection.length }} / {{ numRow }} Selected
+      <mat-divider></mat-divider>
+        Some Actions Here?
+      <mat-divider></mat-divider>
+      <div
+      fxLayout="row"   fxLayoutAlign="end center">
+      <mat-action-row>
+        <button [disabled]='memberSelection.length === 0' #b (click)='downloadFile()' mat-raised-button  color="primary">Go</button>
+      </mat-action-row>
+      </div>
+
+   </div>
+ </div>

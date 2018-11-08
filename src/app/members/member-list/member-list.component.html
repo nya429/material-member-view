@@ -1,0 +1,101 @@
+<div class="overlay">
+
+    <div #table class="table-wrapper">
+        <div class="table-container">
+            <table mat-table [dataSource]="pagedData" 
+            matSort
+            (matSortChange)="onSort($event)"
+            class="mat-elevation-z8">
+     
+              <!--- Note that these columns can be defined in any order.
+                    The actual rendered columns are set as a property on the row definition" -->
+            
+              <!-- Position Column -->
+              <!-- <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+              </ng-container> -->
+
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? onMemebrSelect(row) : null"
+                                [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+              <!-- First Name Column -->
+              <ng-container matColumnDef="firstName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+              </ng-container>
+             
+              <!-- Last Name Column -->
+              <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Last Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+              </ng-container>
+            
+              <!-- DOB Column -->
+              <ng-container matColumnDef="dob">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </th>
+                  <td mat-cell *matCellDef="let element"> {{element.dob}} {{element.dob | agepipe}} </td>
+              </ng-container>
+              
+              <!-- Address Column -->
+              <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef> Address </th>
+                <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+              </ng-container>
+            
+              <!--  CCA ID Column -->
+              <ng-container matColumnDef="ccaid">
+                  <th mat-header-cell *matHeaderCellDef> CCA ID </th>
+                  <td mat-cell *matCellDef="let element"> {{element.ccaid}} </td>
+              </ng-container>
+
+              <!--  Program Column -->
+              <ng-container matColumnDef="program">
+                <th mat-header-cell *matHeaderCellDef> Program </th>
+                <td mat-cell *matCellDef="let element"> {{element.program}} </td>
+              </ng-container>
+              
+              <!--  Enrollment Column -->
+              <ng-container matColumnDef="enrollment">
+                  <th mat-header-cell *matHeaderCellDef> Enrollment </th>
+                  <td mat-cell *matCellDef="let element"> {{element.programStart}} - {{element.programEnd}} </td>
+              </ng-container>
+                
+            
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index"
+              [ngClass]="{'lookup-highlight': isHighlight(i),
+              'lookup-de-highlight': isDeHighlight(i)}"></tr>
+              <!-- <tr>      <mat-paginator [pageSizeOptions]="pageSizeOptions" 
+                [length]="length"
+                [pageSize]="pageSize"
+                (page)="onPage($event)" color='warm'
+                showFirstLastButtons></mat-paginator></tr> -->
+            </table>
+          </div>
+          <mat-paginator [pageSizeOptions]="pageSizeOptions" 
+          [pageIndex]="pageIndex"
+          [length]="count"
+          [pageSize]="pageSize"
+          (page)="onPage($event)" color='warm'
+          showFirstLastButtons></mat-paginator>
+    </div>
+    <div *ngIf='membersLoading' id='loding-wrapper'>
+        <mat-spinner></mat-spinner>
+    </div>
+</div>
+
+
+

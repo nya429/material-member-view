@@ -1,0 +1,42 @@
+<mat-nav-list
+fxLayout="column"
+fxLayoutAlign="begin begin">
+<section>
+    <a mat-list-item routerLink="/reports" (click)="onClose()">
+      <mat-icon>bar_chart</mat-icon>
+      <span class="nav-caption">Report</span>
+    </a>
+    <a mat-list-item routerLink="/members" (click)="onClose()">
+      <mat-icon>group</mat-icon>
+      <span class="nav-caption">Members</span>
+    </a>
+    <a mat-list-item routerLink="/rates" (click)="onClose()">
+      <mat-icon>styles</mat-icon>
+      <span class="nav-caption">Ratings</span>
+    </a>
+    <a mat-list-item routerLink="/process" (click)="onClose()">
+      <mat-icon>restore_page</mat-icon>
+      <span class="nav-caption">Process</span>
+    </a>
+   
+    <a mat-list-item routerLink="/admin" (click)="onClose() ">
+      <mat-icon>input</mat-icon>
+      <span class="nav-caption">Admin</span>
+    </a>
+</section>
+<section fxFlex='grow'
+fxLayout="column"
+fxLayoutAlign="end begin">
+<mat-list-item>
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>eject</mat-icon>
+      <span class="nav-caption">Logout</span>
+    </button>
+  </mat-list-item>
+    <a  mat-list-item routerLink="/config" (click)="onClose()">
+      <mat-icon>settings</mat-icon>
+      <span class="nav-caption">Settings</span>
+    </a>
+
+</section>
+</mat-nav-list>

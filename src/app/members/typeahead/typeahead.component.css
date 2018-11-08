@@ -1,0 +1,31 @@
+.suggesion-list-wrapper {
+    position: absolute;
+    left: 0;
+    top: 32px;
+    background: white; 
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+    z-index: 2;
+    /* transform: translateY(1);t */
+}
+
+.suggesion-list {
+    padding-top: 0;
+}
+
+.matched-text {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.suggesion-item {
+    color: rgba(0, 0, 0, 0.44);
+    white-space: pre;
+    cursor: pointer;
+}
+
+.suggesion-item:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.suggesion-item:hover .matched-text  {
+    color: #29c2b3;
+}

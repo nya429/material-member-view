@@ -1,0 +1,12 @@
+mat-slide-toggle {
+    max-width: 50%;
+}
+
+.mat-slide-toggle-content {
+    white-space: wrap;
+}          
+
+/* .panel-body {
+    max-height:  calc(100vh - 438px);
+    overflow-y:scroll;
+} */

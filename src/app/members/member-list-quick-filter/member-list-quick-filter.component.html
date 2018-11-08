@@ -1,0 +1,45 @@
+<mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon >search</mat-icon>
+            Quick Lookup on This Page         
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form #f="ngForm">
+        <mat-form-field>
+          <input (keyup)="onLookup()" matInput ngModel placeholder="Type anything"
+          id="filterStr" name="filterStr">
+          <!-- <button matSuffix mat-icon-button
+          (click)='f.reset()'
+                matTooltip="Clear the filter"
+                aria-label="Clear the filter">
+                <mat-icon class="mat-20">refresh</mat-icon>
+          </button> -->
+          <label matSuffix class='matches-info'>
+            {{ getMatchNum() == 1 ? getMatchNum() + ' Match' : getMatchNum() + ' Matches' }}  </label>
+        </mat-form-field>
+
+        <button mat-icon-button
+        (click)='onFilterReset()'
+              matTooltip="Clear the filter"
+              aria-label="Clear the filter">
+              <mat-icon class="mat-18">refresh</mat-icon>
+        </button>
+
+
+        <!-- <button mat-icon-button
+        (click)='masterToggle()'
+              matTooltip="Toggle all matches"
+              aria-label="Toggle all matches">
+              <i class="fa fa-check-square-o" style='font-size: 18px;' aria-hidden="true"></i>
+        </button> -->
+        <mat-checkbox
+        matTooltip="Toggle all matches" 
+        (change)="$event ? masterToggle() : null"
+        [checked]="isMatchSelected() && isAllMatchSelected()"
+        [indeterminate]="isMatchSelected() && !isAllMatchSelected()">
+      </mat-checkbox>
+      </form>  
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,25 @@
+mat-sidenav-container {
+    height: calc(100% - 64px);
+  }
+
+  mat-sidenav-container, mat-sidenav-content, mat-sidenav{
+      height: 100%;
+  }
+  
+  mat-sidenav {
+    box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+  } 
+
+  main {
+    padding: 8px;
+    /* margin-top:64px; */
+  }
+ 
+  app-header {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+  }

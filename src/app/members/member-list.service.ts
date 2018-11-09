@@ -20,6 +20,7 @@ export class MemberListService {
     flattenMembers = [];
     memberMatchSelected = new Subject<boolean>();
 
+    memebrReportReady = new Subject<object[]> ();
 
     constructor(private httpClient: HttpClient) { }
 
@@ -219,6 +220,20 @@ export class MemberListService {
     , 0);
         return matchCount !== 0;
     }
+
+    getReportDate(request) {
+        return this.httpClient.post(`http://localhost:5000/member/list/report`, request, {
+            observe: 'body',
+            responseType: 'json',
+          })
+          .subscribe(
+              (result) => {
+                 this.memebrReportReady.next(result['members']);
+              }, (err: HttpErrorResponse)  => {
+                console.error(err);
+              }
+          );
+    } 
 }
 
 function updateForm(target: object, patch: object) {

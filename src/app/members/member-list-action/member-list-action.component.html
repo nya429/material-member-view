@@ -12,7 +12,16 @@
       <div
       fxLayout="row"   fxLayoutAlign="end center">
       <mat-action-row>
-        <button [disabled]='memberSelection.length === 0' #b (click)='downloadFile()' mat-raised-button  color="primary">Go</button>
+          <button [disabled]='memberSelection.length === 0' 
+          (click)='onDownLoad()'
+           mat-raised-button  color="primary">
+           <i class="fa fa-download"></i> Report</button>
+        </mat-action-row>
+      <mat-action-row>
+        <button [disabled]='memberSelection.length === 0'
+        (click)='downloadFile(memberSelection)'
+         mat-raised-button  color="primary">
+         <i class="fa fa-download"></i> Go</button>
       </mat-action-row>
       </div>
 

@@ -11,17 +11,20 @@ export class MemberListActionComponent implements OnInit, OnDestroy {
   memberSelection: object[];
   numRow: number;
   memberSelectSubscription: Subscription;
-  @ViewChild('b') button: ElementRef;
+  memberreportReadySubscription: Subscription;
+
   constructor(private memberListService: MemberListService) { }
 
   ngOnInit() {
     this.memberSelection = [];
     this.numRow = 0;
-    this.memberSelectSubscription = this.memberListService.membersSelected.subscribe(selection => this.onMemberSelected(selection))
+    this.memberSelectSubscription = this.memberListService.membersSelected.subscribe(selection => this.onMemberSelected(selection));
+    this.memberreportReadySubscription = this.memberListService.memebrReportReady.subscribe(report => this.downloadFile(report));
   }
 
   ngOnDestroy() {
     this.memberSelectSubscription.unsubscribe();
+    this.memberreportReadySubscription.unsubscribe();
   }
 
   onMemberSelected(selection) {
@@ -29,8 +32,17 @@ export class MemberListActionComponent implements OnInit, OnDestroy {
     this.numRow = selection.numRow;
   }
   
-  downloadFile() {
-    const data = this.memberSelection;
+  onDownLoad() {
+    let request = {ico: [], sco: []};
+    this.memberSelection.forEach(select => 
+      select['program'] === 'ICO' ? 
+      request.ico.push(select['ccaid']): 
+      request.sco.push(select['ccaid']) );
+    this.memberListService.getReportDate(request);
+  }
+
+  downloadFile(report) {
+    const data = report;
     const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
     const header = Object.keys(data[0]);
     let csv = data.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));

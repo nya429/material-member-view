@@ -1,8 +1,9 @@
 <div class='suggesion-list-wrapper'>
   <mat-list class='suggesion-list'>
     <mat-list-item class='suggesion-item'
-     *ngFor="let suggetsion of typeSuggestions;"
-     (click)='onSelectItem(suggetsion.suggestion)'>
+     *ngFor="let suggetsion of typeSuggestions; let i = index"
+     (click)='onSelectItem(suggetsion.suggestion)'
+     [ngClass]="{'suggestion-item-hovered' : keyupIndex === i}">
       {{ suggetsion.beforeMatchText }}<span class='matched-text'>{{ suggetsion.matchText }}</span>{{ suggetsion.afterMatchText }}
     </mat-list-item>
   </mat-list>

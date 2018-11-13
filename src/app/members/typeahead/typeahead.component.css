@@ -22,8 +22,9 @@
     cursor: pointer;
 }
 
-.suggesion-item:hover {
-    background-color: rgba(0, 0, 0, 0.12);
+.suggesion-item:hover,
+.suggestion-item-hovered {
+    background-color:rgba(0, 0, 0, 0.04);
 }
 
 .suggesion-item:hover .matched-text  {

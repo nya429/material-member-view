@@ -6,7 +6,10 @@ import { Subject } from "rxjs";
 export class MemberListService {
     members = [];
     membersChanged = new Subject<object>();
+
     typeSuggested = new Subject<[{start: number, suggestion: string}]>();
+    typeAheadArrowed = new Subject<string>();
+
     memberLoading = new Subject<null>();
     memebrFilterReseted = new Subject<null> ();
     careLocationLoaded = new Subject<{counties:{key: string, value:string}[],
@@ -134,6 +137,10 @@ export class MemberListService {
                 console.error(err);
               }
           );
+    }
+
+    typeAheadArrow(arrow: string) {
+        this.typeAheadArrowed.next(arrow);
     }
 
     filterReset() {

@@ -15,7 +15,8 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
 
   private matchs;
-  private searchStr: string;
+  private arrowed: boolean;;
+  private searchStr: string; 
   private typeHeadTimer;
 
   private typeSuggestSubscription: Subscription;  
@@ -31,6 +32,7 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
     this.initCareLocations();
     this.initPrograms();
     this.initForm();
+    this.matchs = [];
     this.typeSuggestSubscription = this.memberListService.typeSuggested.subscribe(match => this.matchs = match)
     this.careLocationsscription = this.memberListService.careLocationLoaded.subscribe(reuslt => this.loadCareLocation(reuslt));
   }
@@ -100,28 +102,67 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
     this.memberListService.filterReset();
   }
 
-  onQuickSearch() {
+  onQuickSearch($e) {
+    console.log($e.key)
     clearInterval(this.typeHeadTimer);
+    if ($e.key === 'Enter' || $e.key === 'Escape') {
+      return;
+    } 
+
     this.searchStr = this.filterForm.value.name.toLowerCase();
-    if (this.searchStr.length > 1) {
+    if (this.searchStr.length > 1 && this.searchStr.trim() != '') {
+      console.log('search time', this.searchStr)
       setTimeout(() => {
         this.typeHeadTimer = this.memberListService.typeAhead({"search_str": this.searchStr})
-      }, 150); 
+      }, 200); 
     } else {
-      this.matchs = [];
+      console.log('onSuggestionDismiss')
+      this.onSuggestionDismiss();
     }
   }
 
   onItemSelected(event) {
     this.filterForm.patchValue({name: event})
-    this.matchs = [];
+    this.searchStr = event;
+    this.onSuggestionDismiss();
   }
 
   onSuggestionDismiss() {
+    this.arrowed = false;
     this.matchs = [];
   }
 
   exactdate(e) {
-    e.checked
+              
+  }
+
+  onkeyup() {
+    if (this.matchs.length > 0) {
+      this.memberListService.typeAheadArrow('up');
+      this.arrowed = true;
+    } 
+  }
+
+  onkeydown() {
+    if(this.matchs.length > 0) {
+      this.memberListService.typeAheadArrow('down');
+      this.arrowed = true;
+    } 
+  }
+
+  onkeyenter($e) {
+    if(this.matchs.length > 0 && this.arrowed) {
+      this.memberListService.typeAheadArrow('enter');
+      $e.preventDefault();
+    } else if (this.matchs.length > 0 && !this.arrowed) {
+      this.onSuggestionDismiss();
+      this.onSearch();
+    } else {
+      this.onSearch();
+    }
+  }
+
+  onkeydownenter($e) {
+    $e.preventDefault();
   }
 }

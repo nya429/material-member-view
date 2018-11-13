@@ -27,7 +27,12 @@
           autocomplete="off"
           placeholder="Search by Name"
           formControlName="name"
-          (keyup)='onQuickSearch()'>
+          (keyup)='onQuickSearch($event)'
+          (keyup.arrowup)='onkeyup()'
+          (keyup.arrowdown)='onkeydown()'
+          (keyup.esc)='onSuggestionDismiss()'
+          (keyup.enter)='onkeyenter($event)'
+          (keydown.enter)='onkeydownenter($event)'>
           <app-typeahead 
           [@listExpandTriggerState]
           appClickOutside

@@ -60,12 +60,17 @@ export class MemberListComponent implements OnInit, OnDestroy {
     this.sortedData = this.dataSource.slice();
     this.pagedData = this.sortedData.slice(this.pageIndex, this.pageIndex + this.pageSize);
 
+
     this.memberLoadingSubscription = this.memberListService.memberLoading.subscribe(() => this.membersLoading = true);
     this.memebrFilterResetedSubscription = this.memberListService.memebrFilterReseted.subscribe(() => this.onFilterReseted());
     this.membersChangedSubscription = this.memberListService.membersChanged.subscribe(data => this.onMemberChanged(data));
     this.memebrLookupSubscription = this.memberListService.memberLookuped.subscribe(
       (lookupState: {matches: number[], isLooking: boolean}) => this.onMembersLookingup(lookupState) );
     this.memebrMatchSelectSubscription = this.memberListService.memberMatchSelected.subscribe(isSelect => this.onSelectMatchedMemebr(isSelect));
+      
+    
+    this.pageIndex = 0;
+    this.memberListService.paginateMemberList(this.pageIndex, this.pageSize, this.sortCloumn, this.sortDirection);
   }
 
   ngOnDestroy() {

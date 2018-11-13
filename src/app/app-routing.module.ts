@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth/auth-guard.service';
 import { MembersComponent } from './members/members.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './navigation/home/home.component';
@@ -11,7 +12,7 @@ const appRoutes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'members', component: MembersComponent},
+    {path: 'members', component: MembersComponent, canActivate: [AuthGuard]},
     { path: 'not-found',component: LoginComponent,
         data: {message: 'Page not Found'} },
     { path: '**', redirectTo: 'not-found' },

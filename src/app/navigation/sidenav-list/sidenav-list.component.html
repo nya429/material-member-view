@@ -26,7 +26,7 @@ fxLayoutAlign="begin begin">
 </section>
 <section fxFlex='grow'
 fxLayout="column"
-fxLayoutAlign="end begin">
+fxLayoutAlign="end begin" *ngIf='isAuth()'>
 <mat-list-item>
     <button mat-icon-button (click)="onClose()">
       <mat-icon>eject</mat-icon>

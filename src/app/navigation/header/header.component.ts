@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -8,7 +9,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class HeaderComponent implements OnInit {
   @Output() sidenavToggle = new EventEmitter<void>();
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -17,4 +18,11 @@ export class HeaderComponent implements OnInit {
     this.sidenavToggle.emit();
   }
 
+  onLogout() {
+    window.confirm('Do you want to logout') ? this.authService.logoutUser() : null;
+  }
+
+  isAuth() {
+    return this.authService.isAuthenticated();
+  }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
 
 @Component({
@@ -12,7 +13,7 @@ export class SidenavListComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  constructor() {
+  constructor(private authService: AuthService) {
 
   }
 
@@ -26,5 +27,8 @@ export class SidenavListComponent implements OnInit, OnDestroy {
        this.closeSidenav.emit();
     } 
   }
-
+  
+  isAuth() {
+    return this.authService.isAuthenticated();
+  }
 }

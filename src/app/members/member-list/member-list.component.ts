@@ -41,7 +41,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   count = this.dataSource.length;
   pageIndex = 0;
   // set as options changed
-  pageSize = 10;
+  pageSize = 50;
   // preset
   sortCloumn: string;
   sortDirection;

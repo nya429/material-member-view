@@ -97,15 +97,6 @@ export class MemberListService {
 
     getMemebrList() {
         this.memberLoading.next();
-        // const request = {
-        //     'offset': offset,
-        //     'limit': pageSize,
-        //     'sortColoumn': sortColoumn ? sortColoumn : 'nn.NAME_ID',
-        //     'sortDirection': sortDirection ? sortDirection : 'ASC'
-        // }
-    
-        // updateForm(this.filterForm, request);
- 
         return this.httpClient.post(`http://localhost:5000/member/list`, this.filterForm, {
             observe: 'body',
             responseType: 'json',

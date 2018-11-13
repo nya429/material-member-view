@@ -52,7 +52,7 @@ export class MemberListActionComponent implements OnInit, OnDestroy {
     var a = document.createElement('a');
     var blob = new Blob([csvArray], {type: 'text/csv' }),
     url = window.URL.createObjectURL(blob);
-
+    
     a.href = url;
     a.download = "myFile.csv";
     a.click();

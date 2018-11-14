@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MemberListService } from './../member-list.service';
 
@@ -10,16 +10,14 @@ import { MemberListService } from './../member-list.service';
 })
 export class MemberListQuickFilterComponent implements OnInit, OnDestroy {
   @ViewChild('f') filterForm: NgForm;
+
   membersChangedSubscription: Subscription;
 
   constructor(private memberListService: MemberListService) { }
 
   ngOnInit() {
-    this.membersChangedSubscription =
-    this.memberListService.membersChanged.subscribe(() => {
-      // this.onLookup();
-      this.onFilterReset();
-    });
+    this.membersChangedSubscription = this.memberListService.membersChanged.subscribe(() => 
+      this.onFilterReset());
   }
 
   ngOnDestroy() {

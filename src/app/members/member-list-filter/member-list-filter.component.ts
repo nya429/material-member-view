@@ -40,6 +40,7 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.typeSuggestSubscription.unsubscribe();
     this.careLocationsscription.unsubscribe();
+    this.memberListService.filterReset();
   }
 
   initCareLocations() {
@@ -100,6 +101,7 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
   onClearFilter() {
     this.patchForm();
     this.memberListService.filterReset();
+    this.memberListService.onFilterRested();
   }
 
   onQuickSearch($e) {
@@ -107,9 +109,19 @@ export class MemberListFilterComponent implements OnInit, OnDestroy {
     clearInterval(this.typeHeadTimer);
     if ($e.key === 'Enter' || $e.key === 'Escape') {
       return;
-    } 
+    }
+   
+    if(!this.filterForm.value.name) {
+      this.onSuggestionDismiss();
+      return;
+    }
+    
+    const inputStr = this.filterForm.value.name.toLowerCase() 
+    if(inputStr === this.searchStr) {
+      return;
+    }
 
-    this.searchStr = this.filterForm.value.name.toLowerCase();
+    this.searchStr = inputStr;
     if (this.searchStr.length > 1 && this.searchStr.trim() != '') {
       console.log('search time', this.searchStr)
       setTimeout(() => {

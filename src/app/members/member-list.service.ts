@@ -160,9 +160,12 @@ export class MemberListService {
                 'sortDirection': 'ASC'
             }
         updateForm(this.filterForm, patch);
-        this.memebrFilterReseted.next();
     }
 
+    onFilterRested() {
+        this.memebrFilterReseted.next();
+    }
+    
     selectMember(selected, numRow) {
         this.memberSelection = selected;
         const selection = {selected:  this.memberSelection, numRow: numRow};

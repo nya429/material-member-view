@@ -1,3 +1,5 @@
+import { MemebrDiffWrappeComponent } from './members/memebr-diff-wrappe/memebr-diff-wrappe.component';
+import { MemebrListWrapperComponent } from './members/memebr-list-wrapper/memebr-list-wrapper.component';
 import { AuthGuard } from './auth/auth-guard.service';
 import { MembersComponent } from './members/members.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -12,7 +14,29 @@ const appRoutes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'members', component: MembersComponent, canActivate: [AuthGuard]},
+    {path: 'members', component: MembersComponent, canActivate: [AuthGuard],
+    children: [
+        {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'cca'
+        },
+        {
+            path: 'cca',
+            component: MemebrListWrapperComponent,
+            data: { state: 'cca' } 
+        },
+        {
+            path: 'state',
+            component: MemebrListWrapperComponent,
+            data: { state: 'state' } 
+        },
+        {
+            path: 'diff',
+            component: MemebrDiffWrappeComponent,
+            data: { state: 'diff' } 
+        },
+    ]},
     { path: 'not-found',component: LoginComponent,
         data: {message: 'Page not Found'} },
     { path: '**', redirectTo: 'not-found' },

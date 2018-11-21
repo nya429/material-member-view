@@ -1,0 +1,21 @@
+<div fxLayout="row"
+    fxLayoutAlign="begin begin"
+    fxLayoutGap="20px">
+    <div fxFlex="75%" id="member-index-wrapper view-box">
+      <app-member-list-quick-filter></app-member-list-quick-filter>
+      <app-member-list></app-member-list>
+    </div>
+    <div id="member-index-filter-action-wrapper view-box" fxFlex='25%'>
+       <div
+         fxLayout="column"
+         fxLayoutAlign="begin begin"
+         fxLayoutGap="20px">
+          <div id="member-index-action-wrapper view-box">
+            <app-member-list-action></app-member-list-action>
+          </div>
+          <div id="member-index-filter-wrapper view-box">
+            <app-member-list-filter></app-member-list-filter>
+          </div>
+        </div>
+    </div>
+</div>

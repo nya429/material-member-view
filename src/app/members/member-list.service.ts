@@ -25,6 +25,8 @@ export class MemberListService {
 
     memebrReportReady = new Subject<object[]> ();
 
+    windowResized = new Subject<null> ();
+
     constructor(private httpClient: HttpClient) { }
 
     filterForm = {
@@ -235,6 +237,10 @@ export class MemberListService {
               }
           );
     } 
+
+    onWindowResize() {
+        this.windowResized.next();
+    }
 }
 
 function updateForm(target: object, patch: object) {

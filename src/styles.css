@@ -36,3 +36,15 @@ html, body {
     padding: 30px;
     background: #fff;
 }
+
+
+router-outlet ~ * {
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 20px);
+  }
+
+  /* bootstrap have .5rem */
+label {
+    margin-bottom: 0px !important;
+}

@@ -32,7 +32,9 @@
     "ngx-bootstrap": "^3.0.1",
     "popper.js": "^1.14.4",
     "rxjs": "~6.2.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "d3": "^4.12.2",
+    "d3-scale-chromatic": "^1.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",

@@ -14,6 +14,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  getDate() {
+    let today =  new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    return  month + "/" + day + "/" + year;
+  }
+
   onToggleSidenav() {
     this.sidenavToggle.emit();
   }

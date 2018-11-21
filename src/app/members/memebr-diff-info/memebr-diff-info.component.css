@@ -1,0 +1,25 @@
+.general-card {
+    width:200px;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.general-card .last-card {
+    margin-bottom: 0;
+} 
+
+
+.info-num{
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+
+
+mat-card-subtitle {
+    margin-bottom: 0;
+}
+
+.card-wrapper {
+    padding: 0;
+}

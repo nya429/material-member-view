@@ -55,6 +55,7 @@ private dataset2 = [
   private margin = { top: 20, bottom: 30, left: 30, right: 20};
 
   private xScale: any;
+  private xAxis: any;
   private yScale: any;
 
   private g: any;
@@ -96,26 +97,26 @@ private dataset2 = [
     this.xScale = d3.scaleTime().range([0, this.width - this.margin.left - this.margin.right]);
     // this.yScale = d3.scaleLinear().range([this.height - this.margin.top - this.margin.bottom, 0]);
     this.xScale.domain(d3.extent(this.dataset, d =>  d.year ));
-
-    this.line
+   
+     this.line
       .x(d => this.xScale(d.year))
 
-    this.g.select('.axis--x')
+    this.g.select('.axis-x')
     .attr('transform', 'translate(0,' + (this.height  - this.margin.top - this.margin.bottom) + ')')
-    // TODO add scalbel axis condition here .ticks()
-    .call(d3.axisBottom(this.xScale));
-
+    .call(this.xAxis);
+  
     console.log(this.line(this.dataset))
     this.lineG.select('.line')
     .attr('d', this.line(this.dataset))
   }
 
   createChart() {
-
+    /* ----------create scale------------*/
     this.xScale = d3.scaleTime().range([0, this.width - this.margin.left - this.margin.right]);
-    this.yScale = d3.scaleLinear().range([this.height - this.margin.top - this.margin.bottom, 0]);
-
-
+    this.yScale = d3.scaleLinear ().range([this.height - this.margin.top - this.margin.bottom, 0]);
+    /* ----------create xAxisFormat------------*/
+    this.xAxis = d3.axisBottom(this.xScale) 
+     .tickFormat(d => d3.timeYear(d) < d ? d3.timeFormat("%b")(d): d3.timeFormat("%Y")(d));
 
     /* ----------create line generator------------*/
     this.line = d3.line();
@@ -140,18 +141,18 @@ private dataset2 = [
    this.g = this.svg.select('g');
    this.g.attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
    this.g.append('g')
-      .attr('class', 'axis axis--x')
+      .attr('class', 'axis axis-x')
       .attr('transform', 'translate(0,' + (this.height  - this.margin.top - this.margin.bottom) + ')')
       // TODO add scalbel axis condition here .ticks()
-      .call(d3.axisBottom(this.xScale));
+      .call(this.xAxis);
 
       this.g.append('g')
-      .attr('class', 'axis axis--y')
-      .call(d3.axisLeft(this.yScale).ticks(6).tickFormat(function(d) { return (d / 1000) + 'k'; }))
+      .attr('class', 'axis axis-y')
+      .call(d3.axisLeft(this.yScale).ticks(10).tickFormat(function(d) { return (d / 1000) + 'k'; }))
       .append('text')
       .attr('class', 'axis-title')
       .attr('transform', 'rotate(-90)')
-      .attr('y', 6)
+      .attr('y', 10)
       .attr('dy', '.71em')
       .style('text-anchor', 'end')
       .attr('fill', '#5D6971');
@@ -171,11 +172,6 @@ private dataset2 = [
           .attr('d', this.line(this.dataset2))
           .style('stroke', 'cyan')
           .ease(d3.easeQuadOut);
-
-
-      
-
-      
 
       this.lineG.append('path')
           .datum(this.dataset2)
@@ -226,7 +222,7 @@ private dataset2 = [
                 .attr('r', 10)
                 .ease(d3.easeQuadOut)
 
-                console.log(thisPoint.datum())
+                // console.log(thisPoint.datum())
 
                that.showTooltip(thisPoint.datum());
 
@@ -243,6 +239,7 @@ private dataset2 = [
               that.hideTooltip();
             })
 
+         // rect shadow filter
          this.lineG.append('defs')
                   .append('filter')
                   .attr('id', 'shadow')
@@ -272,7 +269,7 @@ private dataset2 = [
               .attr('font-weight', 'bolder')
               .attr('storke', 'black')
               .attr('x', this.tooltipW / 2)
-              .attr('y', this.tooltipH * 3 / 4)
+              .attr('y', this.tooltipH * 3 / 5)
 
         this.tooltip.select('#tooltip-text')
               .append('tspan').attr('id', 'tooltip-text-value')
@@ -291,9 +288,9 @@ private dataset2 = [
     this.xScale(d.year) + 10 + this.tooltipW / 2:
     this.xScale(d.year) - this.tooltipW - 10  + this.tooltipW / 2)
    .attr('y', d => this.yScale(d.value) - this.tooltipH - 10 < 0 ?
-   this.yScale(d.value) + 10 + this.tooltipH * 3 / 4:
-   this.yScale(d.value) - this.tooltipH - 10 + this.tooltipH * 3 / 4)
-    .text(d => ` value : ${d.value}`)
+   this.yScale(d.value) + 10 + this.tooltipH * 4 / 5:
+   this.yScale(d.value) - this.tooltipH - 10 + this.tooltipH * 4 / 5)
+    .text(d => ` Value : ${d.value}`)
 
     this.tooltip
     .select('#tooltip-text-year')
@@ -302,9 +299,9 @@ private dataset2 = [
     this.xScale(d.year) + 10 + this.tooltipW / 2:
     this.xScale(d.year) - this.tooltipW - 10  + this.tooltipW / 2)
    .attr('y', d => this.yScale(d.value) - this.tooltipH - 10 < 0 ?
-   this.yScale(d.value) + 10 + this.tooltipH * 2 / 4:
-   this.yScale(d.value) - this.tooltipH - 10 + this.tooltipH * 2 / 4)
-    .text(d => ` year : ${d.value}`)
+   this.yScale(d.value) + 10 + this.tooltipH * 2 / 5:
+   this.yScale(d.value) - this.tooltipH - 10 + this.tooltipH * 2 / 5)
+    .text(d => ` Year : ${d.year.toLocaleString("en-us", {month: "short", year: "2-digit"})}`)
 
     this.tooltip        
       .select('#tooltip-rect')

@@ -71,6 +71,13 @@ export class MemberListService {
           );
     }
 
+    testCS() {
+        return this.httpClient.get("https://dotnet-core-2-1-x-songyue.c9users.io/api/values/", {
+            observe:'body',
+            responseType: 'json'
+        }).subscribe(result => console.log(result), err => console.error(err));
+    }
+
     formatCityCountyOptions(items: string[]) {
         let options = [{key:'All', value:''}];  
         items.map(item => {

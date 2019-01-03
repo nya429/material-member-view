@@ -57,6 +57,7 @@ private dataset2 = [
   private xScale: any;
   private xAxis: any;
   private yScale: any;
+  private yAxis: any;
 
   private g: any;
   private lineG: any;
@@ -117,6 +118,13 @@ private dataset2 = [
     /* ----------create xAxisFormat------------*/
     this.xAxis = d3.axisBottom(this.xScale) 
      .tickFormat(d => d3.timeYear(d) < d ? d3.timeFormat("%b")(d): d3.timeFormat("%Y")(d));
+    this.yAxis = d3.axisRight(this.yScale)
+      // .tickSize(this.width - this.margin.left - this.margin.right)
+      // .tickFormat(d  => (d / 1000) + 'k');
+      this.yAxis = d3.axisLeft(this.yScale)
+      .tickFormat(d  => (d / 1000) + 'k');
+  
+    const yAxisline = d3.axisRight(this.yScale).tickSize(this.width - this.margin.left - this.margin.right)
 
     /* ----------create line generator------------*/
     this.line = d3.line();
@@ -148,7 +156,7 @@ private dataset2 = [
 
       this.g.append('g')
       .attr('class', 'axis axis-y')
-      .call(d3.axisLeft(this.yScale).ticks(10).tickFormat(function(d) { return (d / 1000) + 'k'; }))
+      .call(this.yAxis)
       .append('text')
       .attr('class', 'axis-title')
       .attr('transform', 'rotate(-90)')
@@ -156,6 +164,12 @@ private dataset2 = [
       .attr('dy', '.71em')
       .style('text-anchor', 'end')
       .attr('fill', '#5D6971');
+
+      this.g.append('g')
+      .attr('class', 'axis axis-y-line')
+      .call(yAxisline)
+
+      this.g.select('.axis-y-line').selectAll(".tick").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
 
      this.lineG = this.svg.select('.line-g');
 
@@ -220,6 +234,7 @@ private dataset2 = [
                 .transition()
                 .duration(200)
                 .attr('r', 10)
+                .attr('opacity', .7)
                 .ease(d3.easeQuadOut)
 
                 // console.log(thisPoint.datum())
@@ -233,7 +248,8 @@ private dataset2 = [
               thisPoint
               .transition()
               .duration(100)
-              .attr('r', 5)
+              .attr('r', 4)
+              .attr('opacity', 1)
               .ease(d3.easeQuadOut)
 
               that.hideTooltip();

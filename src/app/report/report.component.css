@@ -1,0 +1,35 @@
+.site-operation {
+    font-weight: bolder;
+}
+
+.siteList-collapse {
+    display: none;
+}
+
+.badge {
+    transition: .3s;
+}
+
+.badge-warning {
+    animation: blink 1s linear infinite;
+}
+
+tr:hover {
+    cursor: pointer;
+    transition: .3s;
+    background-color: rgba(0, 120, 255, .3);
+}
+
+.table-row-clickable:active {
+    background-color: rgba(0, 120, 255, .8);
+}
+
+.table-row-clickable:active td {
+    color: #ffffff;
+}
+
+@keyframes blink {
+    0% { opacity: .5; }
+    50% { opacity: 1; }
+    100% { opacity: .5; }
+  }

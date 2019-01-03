@@ -68,7 +68,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
       (lookupState: {matches: number[], isLooking: boolean}) => this.onMembersLookingup(lookupState) );
     this.memebrMatchSelectSubscription = this.memberListService.memberMatchSelected.subscribe(isSelect => this.onSelectMatchedMemebr(isSelect));
       
-    
+    this.memberListService.testCS();
     // this.pageIndex = 0;
     // this.memberListService.paginateMemberList(this.pageIndex, this.pageSize, this.sortCloumn, this.sortDirection);
   }

@@ -1,3 +1,4 @@
+import { ReportComponent } from './report/report.component';
 import { MemebrDiffWrappeComponent } from './members/memebr-diff-wrappe/memebr-diff-wrappe.component';
 import { MemebrListWrapperComponent } from './members/memebr-list-wrapper/memebr-list-wrapper.component';
 import { AuthGuard } from './auth/auth-guard.service';
@@ -12,8 +13,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 const appRoutes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
+    {path: 'home', component: LoginComponent},
     {path: 'login', component: LoginComponent},
+    {path: 'reports', component: ReportComponent},
     {path: 'members', component: MembersComponent, canActivate: [AuthGuard],
     children: [
         {

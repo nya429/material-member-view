@@ -18,6 +18,7 @@ import { NavigationModule } from './navigation/navigation.module';
 import { SignupComponent } from './auth/signup/signup.component';
 import { MembersComponent } from './members/members.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { ReportModule } from './report/report.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AuthGuard } from './auth/auth-guard.service';
     CoreModule,
     // NavigationModule,
     AuthModule,
-    MembersModule
+    MembersModule,
+    ReportModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

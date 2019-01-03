@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row">
+      <div class="col-md-6">
+        
+      </div>
+      <div class="col-md-6">
+        <app-site-status-chart></app-site-status-chart>
+
+      </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead class="thead-dark">
+              <th>Url</th>
+              <th>Operation</th>
+              <th>Status Code</th>
+              <th>Last runtime</th>
+            </thead>
+            <tbody *ngFor='let opt of siteList;  let i = index'>
+              <tr (click)='onToggle(i)'  
+                  class='table-row-clickable'>
+                  <td> site{{ i + 1 }}.{{ opt.url }}  </td> 
+                  <td  class='site-operation'>
+                    {{ statusOptions.opts[0] }} 
+                  </td>
+                  <td><span class="badge"         
+                     [ngClass]="{
+                    'badge-success': i % 2 === 0, 
+                    'badge-danger': i % 2 === 1
+                  }">{{ ok[i % 2]}}</span></td>
+                  <td>{{ opt.runtime | date:"HH:mm:ss dd/MM/yyyy" }} </td>
+              </tr>
+              <tr *ngFor='let opt of siteList'
+                  [ngClass]="{'siteList-collapse': showState[i] }" >
+                  <td *ngIf="ok[i % 2] === 200"></td> 
+                  <td *ngIf="ok[i % 2] === 200"
+                  class='site-operation'>{{ opt.opts }} </td>
+                  <td *ngIf="ok[i % 2] === 200">
+                    <span class="badge"
+                    [ngClass]="{
+                      'badge-warning': opt.status === 'PENDING',
+                      'badge-success': opt.status === 200, 
+                      'badge-danger': opt.status === 404 || opt.status === 500 || opt.status === 301 }">
+                        {{ opt.status}} </span></td>
+                <td *ngIf="ok[i % 2] === 200">{{ opt.runtime | date:"HH:mm:ss dd/MM/yyyy" }} </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <tbody>
+
+    </tbody>
+  </div>
+</div>

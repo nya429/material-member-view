@@ -2,6 +2,12 @@
     font-weight: bolder;
 }
 
+.site-name {
+    color: #777;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
 .siteList-collapse {
     display: none;
 }

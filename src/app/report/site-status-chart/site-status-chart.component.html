@@ -1,3 +1,5 @@
 <div class='chart-container'>
-  <div #pieChart class='circle-chart'></div>
+  <div #pieChart class='circle-chart'>
+      <mat-spinner *ngIf='!dataset'></mat-spinner>
+  </div>
 </div>

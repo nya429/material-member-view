@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+import { ReportService } from './../report.service';
 import { Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
 
@@ -9,7 +11,7 @@ import * as d3 from 'd3';
 })
 export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestroy  {
     @ViewChild('pieChart') private chartContainer: ElementRef;
-    private dataset = [50, 0];
+    private dataset;
   
     element;
     svg: any;
@@ -19,33 +21,43 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
     arc = d3.arc();
   
     changeTimer;
-  
+    score = 0
+
     private width: number;
     private height: number;
-    private margin: any = { top: 20, bottom: 20, left: 20, right: 20};
     private circleWidth = 30;
     private innerRadius;
     private outerRadius;
-    private xScale: any;
-    private yScale: any;
-    private colors: any;
-    private xAxis: any;
-    private yAxis: any;
+
+    statusChangeSubscription: Subscription;
+
   
-    constructor() { }
+    constructor(private statusService: ReportService) { }
   
     ngOnInit() {
       this.element = this.chartContainer.nativeElement;
-  
+      
       this.createBase();
       this.scaleSize();
-      this.createChart();
-      this.increaseScore();
-      setTimeout(() => {
-        this.changeTimer = setInterval(() => {
-          this.change();
-        }, 5000);
-      }, 5000);
+      // setTimeout(() => {
+      //   this.changeTimer = setInterval(() => {
+      //     this.change();
+      //   }, 5000);
+      // }, 5000);
+
+
+
+        this.statusChangeSubscription = this.statusService.statusChartChanged.subscribe(counts => {
+          
+          if(!this.dataset) {
+            this.dataset = counts;
+            this.createChart();
+            this.changeScore();
+          } else {
+            this.onStatusChanged(counts);
+          }
+        });
+
     }
   
     ngAfterViewInit() {
@@ -77,15 +89,16 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
               .padAngle(.03)
               .cornerRadius(5);
   
-      const color = d3.scaleOrdinal().range(['#FF511E','#1E90FF']);
-  
+      // const color = d3.scaleOrdinal().range(['#FF511E','#1E90FF']);
+      const color = ['#FF511E','#1E90FF'];
+
       const g = this.svg.append('g');
       g.attr('transform', 'translate(' + (this.width / 2) + ',' + (this.height / 2) + ')');
   
       g.selectAll('g').data(this.piedata).enter().append('g').attr('class', 'arc-g');
   
       this.svg.selectAll('.arc-g').data(this.piedata).append('path')
-        .style('fill', d => color(d.data))
+        .style('fill', (d,i) => color[i])
         .attr('transform', 'rotate(-90, 0, 0)')
         .transition()
         .ease(d3.easeLinear)
@@ -126,21 +139,26 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
         .style('font-size', '20px')
         .attr('y', d => 50 )
         .attr('x', d => 0 )
-        .text(d => 'Finished');
+        .text(d => 'Passed');
     }
 
-    increaseScore() {
-      let score = 0;
-      const limit =  Math.floor(this.dataset[1] / (this.dataset[0] + this.dataset[1]) * 100) 
-      const step = limit / 40;
-     
+    changeScore() {
+      let prevScore = this.score;
+      const newScore =  Math.floor(this.dataset[1] / (this.dataset[0] + this.dataset[1]) * 100) 
+      this.score = newScore;
+
+      const step = (newScore - prevScore) / 40;
+
+      const isGreater = newScore >= prevScore ? true: false;
       let scoreTimer = setInterval(() => {
-        score = score + step;
+        prevScore = prevScore + step;
    
         this.centerText.select('#text-dynamic')
-         .text(d => `${Math.floor(score)}%`);
+         .text(d => `${Math.floor(prevScore)}%`);
 
-        if(score >= limit) {
+        if((isGreater && (prevScore >= newScore)) || (!isGreater && (prevScore <= newScore))) {
+          this.centerText.select('#text-dynamic')
+          .text(d => `${newScore}%`);
           clearInterval(scoreTimer);
         }
       }, 20);
@@ -181,17 +199,20 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
 
     change() {
       const oldPiedata = this.piedata;
-
+  
       const failNum = Math.floor(Math.random() * 50);
       const succNum = 50 - failNum;
-      const color = d3.scaleOrdinal().range(['#FF511E','#1E90FF']);
-      
+      // const color = d3.scaleOrdinal().range(['#FF511E','#1E90FF']);
+      const color = ['#FF511E','#1E90FF'];
+
+
+
       this.dataset = [failNum, succNum];
       this.piedata = this.pie(this.dataset);
   
       this.svg.selectAll('path') 
          .data(this.piedata)
-        .style('fill', d => color(d.data))
+        .style('fill', (d,i) => color[i])
         .transition()
         .ease(d3.easeLinear)
         .duration(800)
@@ -206,11 +227,38 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
         .attrTween('transform', (d, i) => this.arcTweenText(d, oldPiedata[i], this))
         .text(d => d.data);
         
-        this.centerText.select('#text-dynamic')
-          .text(d => `0%`);
+        this.changeScore();
 
-        this.increaseScore();
+    }
 
+    onStatusChanged(count) {
+      const oldPiedata = this.piedata;
+  
+      const failNum = count[0];
+      const succNum = count[1];
+      const color = ['#FF511E','#1E90FF'];
+      
+      this.dataset = [failNum, succNum];
+      this.piedata = this.pie(this.dataset);
+  
+      this.svg.selectAll('path') 
+         .data(this.piedata)
+         .style('fill', (d,i) => color[i])
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(800)
+        .attrTween('d', (d, i) => this.arcTween2(d, i, oldPiedata[i], this));
+
+        /* ----------append text------------*/
+        this.svg.selectAll('.arc-text')
+        .data(this.piedata)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(800)
+        .attrTween('transform', (d, i) => this.arcTweenText(d, oldPiedata[i], this))
+        .text(d => d.data);
+        
+        this.changeScore();
     }
   
   }

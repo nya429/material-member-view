@@ -1,5 +1,6 @@
+import { ReportService } from './report.service';
 import { Component, OnInit } from '@angular/core';
-import { randomBytes } from 'crypto';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-report',
@@ -7,45 +8,36 @@ import { randomBytes } from 'crypto';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit {
-  showState = [false, false, false, false];
+  siteList = [];
+  showState = [];
 
-  statusOptions = {
-     opts: ['Access', 'Login', 'Process', 'Logout', 'Mp_import', 'Backup'],
-     status: [200, 301, 404, 500, 'PENDING'],
-  };
+  statusChangeSubscription: Subscription;
 
-  ok = [200, 404];
-
-  siteList = [{
-    url:  'commonwealthcare.org',
-    opts: random(this.statusOptions.opts),
-    status: random(this.statusOptions.status),
-    runtime: Date.now()
-  },
-  {
-    url:  'commonwealthcare.org',
-    opts: random(this.statusOptions.opts),
-    status: random(this.statusOptions.status),
-    runtime: Date.now()
-  },
-  {
-    url:  'commonwealthcare.org',
-    opts: random(this.statusOptions.opts),
-    status: random(this.statusOptions.status),
-    runtime: Date.now()
-  },
-  {
-    url:  'commonwealthcare.org',
-    opts: random(this.statusOptions.opts),
-    status: random(this.statusOptions.status),
-    runtime: Date.now()
-  }];
-
-  constructor() { }
+  constructor(private statusService: ReportService) { }
   
   ngOnInit() { 
-    this.pendingToSuccess();
+    this.statusChangeSubscription = this.statusService.statusListChanged.subscribe(siteStatusList => 
+      this.onStatusChanged(siteStatusList));
+    this.getStatus();
   }
+
+  getStatus() {
+    console.log('hey')
+    if(this.siteList != null && this.siteList.length > 0) {
+      this.siteList.map(site => {
+        site.status = 'PENDING'
+        site.operations.map(opt => opt.status = 'PENDING');
+      });
+    }
+    this.statusService.getHttpStatus();
+  }
+
+  onStatusChanged(siteStatusList) {
+    this.showState = siteStatusList.map(site => false);
+    this.siteList = siteStatusList.map(site => ({...site}));
+  }
+
+
 
   pendingToSuccess() {
     this.siteList.map(site => {
@@ -59,7 +51,6 @@ export class ReportComponent implements OnInit {
  
   onToggle(index: number) {
     this.showState[index] = !this.showState[index];
-    console.log(this.showState);
   }
 }
 

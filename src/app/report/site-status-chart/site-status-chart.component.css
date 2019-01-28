@@ -2,3 +2,14 @@
     height: 300px;
 }
 
+#spinner-wrapper {
+    height: 300px;
+    width:100%;
+    position: absolute;
+    top: 100px;
+}
+
+mat-spinner {
+  margin:auto;
+  right: 0;
+}

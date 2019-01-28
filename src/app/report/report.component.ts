@@ -29,7 +29,7 @@ export class ReportComponent implements OnInit {
         site.operations.map(opt => opt.status = 'PENDING');
       });
     }
-    this.statusService.getHttpStatus();
+    this.statusService.getStatus();
   }
 
   onStatusChanged(siteStatusList) {

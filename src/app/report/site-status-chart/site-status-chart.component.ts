@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { ReportService } from './../report.service';
 import { Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
+import { windowCount } from 'rxjs/operators';
 
 
 @Component({
@@ -39,24 +40,24 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
       
       this.createBase();
       this.scaleSize();
-      // setTimeout(() => {
-      //   this.changeTimer = setInterval(() => {
-      //     this.change();
-      //   }, 5000);
-      // }, 5000);
+      setTimeout(() => {
+        this.changeTimer = setInterval(() => {
+          this.change();
+        }, 3000);
+      }, 3000);
 
 
 
-        this.statusChangeSubscription = this.statusService.statusChartChanged.subscribe(counts => {
-          
-          if(!this.dataset) {
-            this.dataset = counts;
-            this.createChart();
-            this.changeScore();
-          } else {
-            this.onStatusChanged(counts);
-          }
-        });
+      this.statusChangeSubscription = this.statusService.statusChartChanged.subscribe(counts => {
+        
+        if(!this.dataset) {
+          this.dataset = counts;
+          this.createChart();
+          this.changeScore();
+        } else {
+          this.onStatusChanged(counts);
+        }
+      });
 
     }
   
@@ -96,16 +97,62 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
       g.attr('transform', 'translate(' + (this.width / 2) + ',' + (this.height / 2) + ')');
   
       g.selectAll('g').data(this.piedata).enter().append('g').attr('class', 'arc-g');
-  
+      
       this.svg.selectAll('.arc-g').data(this.piedata).append('path')
         .style('fill', (d,i) => color[i])
+        .attr('opacity', .7)
         .attr('transform', 'rotate(-90, 0, 0)')
+        .attr('going', true)
+        .style('cursor', 'pointer')
         .transition()
         .ease(d3.easeLinear)
         .delay((d, i) =>  200 + i * 50)
         .duration(800)
         .attrTween('d', (d, i) => this.arcTween(d, i, this))
         .attr('transform', 'rotate(0, 0, 0)');
+      
+        const that = this;
+        this.svg.selectAll('.arc-g')
+          .on('mouseover', function(d, i) {
+            const thisArc = d3.select(this)
+         
+            if(thisArc.attr('going') === "true") {
+              return;
+            }
+  
+            thisArc.select('path')
+              .transition()
+              .duration(100)
+              .attr('opacity', 1);
+          })
+          .on('mouseout', function(d, i) {
+            const thisArc = d3.select(this);
+
+            if(thisArc.attr('going') === "true") {
+              return;
+            }
+
+            thisArc.select('path')
+               .transition()
+               .duration(100)
+              .attr('opacity', .7);
+
+          })
+          .on('click', function(d, i) {
+            const thisArc = d3.select(this)
+         
+            if(thisArc.attr('going') === "true") {
+              return;
+            }
+            
+            that.onArcClick(thisArc.select('path').datum());
+
+          });
+
+          setTimeout(() => {
+            this.svg.selectAll('.arc-g')
+              .attr('going', false)
+          }, 805);
   
       /* ----------append text------------*/
       g.selectAll('.arc-g')
@@ -140,6 +187,8 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
         .attr('y', d => 50 )
         .attr('x', d => 0 )
         .text(d => 'Passed');
+
+      
     }
 
     changeScore() {
@@ -210,9 +259,14 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
       this.dataset = [failNum, succNum];
       this.piedata = this.pie(this.dataset);
   
+      this.svg.selectAll('.arc-g') 
+      .data(this.piedata)
+
+
       this.svg.selectAll('path') 
          .data(this.piedata)
         .style('fill', (d,i) => color[i])
+        .attr('opacity', .7)
         .transition()
         .ease(d3.easeLinear)
         .duration(800)
@@ -228,6 +282,16 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
         .text(d => d.data);
         
         this.changeScore();
+
+                /*-- status change ----*/
+
+                this.svg.selectAll('.arc-g')
+                .attr('going', true);
+        
+                setTimeout(() => {
+                  this.svg.selectAll('.arc-g')
+                    .attr('going', false)
+                }, 805);
 
     }
 
@@ -259,7 +323,15 @@ export class SiteStatusChartComponent implements OnInit, AfterViewInit, OnDestro
         .text(d => d.data);
         
         this.changeScore();
+
+
     }
+
+      onArcClick(d) {
+
+        console.log(d);
+        window.confirm(`value: ${d.value}, startAngle: ${d.startAngle}, endAngle: ${d.endAngle}`);
+      }
   
   }
   

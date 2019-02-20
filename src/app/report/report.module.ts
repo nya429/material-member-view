@@ -4,12 +4,14 @@ import { ReportComponent } from './report.component';
 import { SiteStatusChartComponent } from './site-status-chart/site-status-chart.component';
 import { ReportService } from './report.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import { MatProgressBarModule } from '@angular/material';
 @NgModule({
   imports: [
     CommonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
-  declarations: [ReportComponent, SiteStatusChartComponent],
+  declarations: [ReportComponent, SiteStatusChartComponent, ],
   providers:[ReportService]
 })
 export class ReportModule { }

@@ -58,7 +58,7 @@ export class AuthService {
 
     isAuthenticated() {
         return true;
-        return this.token !== null;
+        //return this.token !== null;
 
     }
     

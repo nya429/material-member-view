@@ -19,7 +19,7 @@ a {
   
   .router-link::after {
     content: "";
-    background-color: teal;
+    background-color: #b72029;
     height: 100%;
     width: 4px;
     position: absolute;

@@ -1,3 +1,4 @@
+import { ProcessModule } from './process/process.module';
 import { AuthService } from './auth/auth.service';
 import { MembersModule } from './members/members.module';
 import { HomeComponent } from './navigation/home/home.component';
@@ -34,10 +35,11 @@ import { ReportModule } from './report/report.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    // NavigationModule,
+  //   NavigationModule,
     AuthModule,
     MembersModule,
     ReportModule,
+    ProcessModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

@@ -1,3 +1,4 @@
+import { D3forceComponent } from './process/d3force/d3force.component';
 import { ReportComponent } from './report/report.component';
 import { MemebrDiffWrappeComponent } from './members/memebr-diff-wrappe/memebr-diff-wrappe.component';
 import { MemebrListWrapperComponent } from './members/memebr-list-wrapper/memebr-list-wrapper.component';
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
             data: { state: 'diff' } 
         },
     ]},
+    {path: 'process', component: D3forceComponent},
     { path: 'not-found',component: LoginComponent,
         data: {message: 'Page not Found'} },
     { path: '**', redirectTo: 'not-found' },
